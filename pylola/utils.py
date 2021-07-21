@@ -30,7 +30,7 @@ def _do_enrichment_analysis(row):
     odds_ratio, p_value = fisher_exact(table)
     return {
         "odds_ratio": odds_ratio,
-        "p_value": p_value
+        "p_value_log": (-1) * np.log10(p_value)
     }
 
 def run_lola(query, target_list, universe, names=None, processes=2):
