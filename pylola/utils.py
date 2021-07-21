@@ -5,6 +5,8 @@ import pandas as pd
 import numpy as np
 from scipy.stats import fisher_exact
 
+PSEUDOCOUNT = 10**-300
+
 def _get_contingency_table(target, query, universe):
     """calculates contingency table for query, target and universe"""
     query_target = bf.count_overlaps(query, target)
@@ -27,10 +29,10 @@ def _do_enrichment_analysis(row):
     ], [
         row["c"], row["d"]
     ]])
-    odds_ratio, p_value = fisher_exact(table)
+    odds_ratio, p_value = fisher_exact(table, alternative="greater")
     return {
         "odds_ratio": odds_ratio,
-        "p_value_log": (-1) * np.log10(p_value)
+        "p_value_log": (-1) * np.log10(p_value + PSEUDOCOUNT)
     }
 
 def run_lola(query, target_list, universe, names=None, processes=2):

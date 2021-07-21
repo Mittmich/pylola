@@ -23,10 +23,10 @@ class TestRunLOLA(unittest.TestCase):
             "b": [69997, 71404],
             "c": [919, 13314],
             "d": [1409, 2],
-            "p_value_log": [0.0001901352, 0.0000],
             "odds_ratio": [0.8673024, 6.1035 * 10**-5],
+            "p_value_log": [0.0001901352, 0.0000],
         })
-        assert_frame_equal(result, expected)
+        assert_frame_equal(result, expected, check_exact=False, atol=10**-5)
 
 
 if __name__ == "__main__":
