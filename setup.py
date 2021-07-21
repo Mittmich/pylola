@@ -8,10 +8,7 @@ setuptools.setup(
     description="python implementation of LOLA",
     long_description_content_type="",
     packages=setuptools.find_packages(),
-    install_requires=[
-        "bioframe==0.2.1",
-        "scipy==1.5.2"
-    ],
+    install_requires=["bioframe==0.2.1", "scipy==1.5.2"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",

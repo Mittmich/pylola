@@ -2,3 +2,4 @@ exampleData/*
 playground/*
 *.egg-info
 *.pyc
+.vscode/*
