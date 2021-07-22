@@ -79,8 +79,8 @@ The mapping to the respective contingency table is as follows:
 
 |                  | present in target | absent in target |
 |------------------|-------------------|------------------|
-| present in query | a                 | b                |
-| absent in query  | c                 | d                |
+| **present in query** | a                 | b                |
+| **absent in query**  | c                 | d                |
 
 
 The order of the rows in the table corresponds to the order in the `target_list`. Additionally, one can pass an iterable containing the names of the respective target-items using the `names` parameters. Then, an additional `name` column will be appended to the output.
