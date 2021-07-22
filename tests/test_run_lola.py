@@ -20,9 +20,9 @@ class TestRunLOLA(unittest.TestCase):
             "./tests/test_files/target2.bed", sep="\t", header=None
         )[[0, 1, 2]].rename(columns={0: "chrom", 1: "start", 2: "end"})
         cls.target_list = [cls.target1, cls.target2]
-        cls.universe = pd.concat(
-            (cls.query1, cls.target1, cls.target2)
-        ).reset_index(drop=True)
+        cls.universe = pd.concat((cls.query1, cls.target1, cls.target2)).reset_index(
+            drop=True
+        )
 
     def test_regions_subsets_of_universe(self):
         """Compares that output of the R LOLA version with pylola
