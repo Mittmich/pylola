@@ -1,3 +1,4 @@
+"""Tests for pylola"""
 import unittest
 import pandas as pd
 from pandas.testing import assert_frame_equal
@@ -8,23 +9,23 @@ class TestRunLOLA(unittest.TestCase):
     """Tests for the run_lola functions."""
 
     @classmethod
-    def setUp(self):
-        self.query1 = pd.read_csv(
+    def setUp(cls):
+        cls.query1 = pd.read_csv(
             "./tests/test_files/query1.bed", sep="\t", header=None
         )[[0, 1, 2]].rename(columns={0: "chrom", 1: "start", 2: "end"})
-        self.target1 = pd.read_csv("./tests/test_files/target1.bed", sep="\t")[
+        cls.target1 = pd.read_csv("./tests/test_files/target1.bed", sep="\t")[
             ["chrom", "start", "end"]
         ]
-        self.target2 = pd.read_csv(
+        cls.target2 = pd.read_csv(
             "./tests/test_files/target2.bed", sep="\t", header=None
         )[[0, 1, 2]].rename(columns={0: "chrom", 1: "start", 2: "end"})
-        self.target_list = [self.target1, self.target2]
-        self.universe = pd.concat(
-            (self.query1, self.target1, self.target2)
+        cls.target_list = [cls.target1, cls.target2]
+        cls.universe = pd.concat(
+            (cls.query1, cls.target1, cls.target2)
         ).reset_index(drop=True)
 
     def test_regions_subsets_of_universe(self):
-        """Compares that output of the R LOLA version with pylola 
+        """Compares that output of the R LOLA version with pylola
         where query and targets are a subset of universe."""
         result = pylola.run_lola(
             self.query1, self.target_list, self.universe, processes=1

@@ -1,3 +1,4 @@
+"""Worker function for pylola."""
 from multiprocessing import Pool
 from functools import partial
 import bioframe as bf
@@ -10,13 +11,22 @@ PSEUDOCOUNT = 10 ** -300
 
 def _get_contingency_table(target, query, universe):
     """calculates contingency table for query, target and universe"""
+    # create overlaps
     query_target = bf.count_overlaps(query, target)
     universe_target = bf.count_overlaps(universe, target)
-    a = len(query_target.query("count > 0"))
-    b = len(universe_target.query("count > 0")) - a
-    c = len(query_target.query("count == 0"))
-    d = len(universe) - a - b - c
-    return {"a": a, "b": b, "c": c, "d": d}
+    # calculate elements of contingency table
+    query_and_target = len(query_target.query("count > 0"))
+    query_but_not_target = len(universe_target.query("count > 0")) - query_and_target
+    target_but_not_query = len(query_target.query("count == 0"))
+    not_query_not_target = (
+        len(universe) - query_and_target - query_but_not_target - target_but_not_query
+    )
+    return {
+        "a": query_and_target,
+        "b": query_but_not_target,
+        "c": target_but_not_query,
+        "d": not_query_not_target,
+    }
 
 
 def _do_enrichment_analysis(row):
@@ -42,6 +52,5 @@ def run_lola(query, target_list, universe, names=None, processes=2):
     )
     if names is None:
         return pd.concat((contingency_frame, enrichment_result), axis=1)
-    else:
-        name_frame = pd.DataFrame({"names": names})
-        return pd.concat((contingency_frame, enrichment_result, name_frame), axis=1)
+    name_frame = pd.DataFrame({"names": names})
+    return pd.concat((contingency_frame, enrichment_result, name_frame), axis=1)
